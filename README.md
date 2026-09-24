@@ -1,4 +1,4 @@
-# 🌱 FloraScan AI
+# FloraScan AI
 
 ## AI-Based Plant Disease Detection and Crop Advisory System
 
@@ -13,7 +13,7 @@
 
 ---
 
-## 📌 Overview
+## Overview
 
 **FloraScan AI** is an AI-powered plant disease detection and crop advisory system designed to identify plant diseases from leaf images.
 
@@ -21,18 +21,18 @@ The system uses **deep learning and transfer learning** to classify plant diseas
 
 After identifying the disease, the system provides structured information including:
 
-* 🌿 Crop and disease name
-* 📊 Prediction confidence
-* 🔍 Grad-CAM visual explanation
-* 🩺 Disease symptoms
-* 🌱 Treatment information
-* 🛡️ Prevention recommendations
+* Crop and disease name
+* Prediction confidence
+* Grad-CAM visual explanation
+*  Disease symptoms
+* Treatment information
+* Prevention recommendations
 
 The project is designed as an **MCA major project and research-oriented deep learning system** combining computer vision, transfer learning, explainable AI, and agricultural decision support.
 
 ---
 
-## 🎯 Problem Statement
+## Problem Statement
 
 Plant diseases can significantly affect crop productivity and agricultural sustainability.
 
@@ -53,13 +53,13 @@ FloraScan AI addresses these challenges by combining:
 
 ---
 
-## 🚀 Key Features
+## Key Features
 
-### 🔬 AI-Based Disease Detection
+### AI-Based Disease Detection
 
 Classifies plant leaf images into supported healthy and disease categories using deep learning.
 
-### 🧠 Transfer Learning
+### Transfer Learning
 
 Experiments with multiple pretrained architectures:
 
@@ -69,15 +69,15 @@ Experiments with multiple pretrained architectures:
 
 A baseline CNN trained from scratch is also implemented for comparison.
 
-### 🔍 Explainable AI
+### Explainable AI
 
 Grad-CAM generates visual heatmaps showing the image regions that contributed to the model's prediction.
 
-### 📊 Confidence Score
+### Confidence Score
 
 The application displays the model's prediction confidence and provides cautious messaging for low-confidence predictions.
 
-### 🌱 Crop Advisory
+### Crop Advisory
 
 Provides structured information related to:
 
@@ -86,7 +86,7 @@ Provides structured information related to:
 * Treatment
 * Prevention
 
-### 🖼️ Image Upload
+### Image Upload
 
 Supports common image formats such as:
 
@@ -94,7 +94,7 @@ Supports common image formats such as:
 * JPEG
 * PNG
 
-### 🌐 Web Application
+### Web Application
 
 A responsive Flask application provides a simple interface for:
 
@@ -104,13 +104,13 @@ A responsive Flask application provides a simple interface for:
 * Inspecting Grad-CAM explanations
 * Reading crop advisory information
 
-### 🔌 REST API
+### REST API
 
 The application also provides a prediction API for potential integration with other applications and systems.
 
 ---
 
-## 🏗️ System Architecture
+## System Architecture
 
 ```text
                     ┌──────────────────────┐
@@ -165,7 +165,7 @@ The application also provides a prediction API for potential integration with ot
 
 ---
 
-## 📚 Dataset
+## Dataset
 
 ### PlantVillage Dataset
 
@@ -279,7 +279,7 @@ Final Model
 
 ---
 
-## 🔍 Explainable AI — Grad-CAM
+## Explainable AI — Grad-CAM
 
 FloraScan AI uses **Gradient-weighted Class Activation Mapping (Grad-CAM)** to provide visual explanations for model predictions.
 
@@ -314,7 +314,7 @@ Grad-CAM is treated as an **interpretability tool**, not proof that a prediction
 
 ---
 
-## 🌱 Crop Advisory Module
+## Crop Advisory Module
 
 The advisory module maps the predicted disease to structured agricultural information.
 
@@ -350,7 +350,7 @@ Agricultural recommendations should be supported by reliable references and shou
 
 ---
 
-## 🧰 Technology Stack
+## Technology Stack
 
 | Category             | Technology                       |
 | -------------------- | -------------------------------- |
@@ -368,7 +368,7 @@ Agricultural recommendations should be supported by reliable references and shou
 
 ---
 
-## 📁 Project Structure
+## Project Structure
 
 ```text
 plant-disease-detection-advisory/
@@ -440,7 +440,7 @@ plant-disease-detection-advisory/
 
 ---
 
-## ⚙️ Installation
+## Installation
 
 ### 1. Clone the Repository
 
@@ -491,7 +491,7 @@ notebooks/01_dataset_exploration.ipynb
 
 ---
 
-## 🧪 Model Training
+## Model Training
 
 The recommended development sequence is:
 
@@ -533,7 +533,7 @@ The notebooks are organized accordingly:
 
 ---
 
-## 📊 Model Evaluation
+## Model Evaluation
 
 The project evaluates models using:
 
@@ -561,7 +561,7 @@ No estimated or fabricated performance values should be included.
 
 ---
 
-## 🌐 Running the Web Application
+## Running the Web Application
 
 After the final model and required resources are available:
 
@@ -597,7 +597,7 @@ Display Result
 
 ---
 
-## 🔌 REST API
+## REST API
 
 FloraScan AI can expose a prediction endpoint for programmatic use.
 
@@ -634,7 +634,7 @@ The exact response fields depend on the implemented application version and advi
 
 ---
 
-## 🧪 Testing
+## Testing
 
 The project includes automated tests for major components.
 
@@ -676,7 +676,7 @@ Tests cover areas such as:
 
 ---
 
-## 🔐 Security Considerations
+## Security Considerations
 
 The application includes safeguards for uploaded images.
 
@@ -693,7 +693,7 @@ The application should not expose debug information or stack traces in productio
 
 ---
 
-## 📈 Performance Evaluation
+## Performance Evaluation
 
 The project can measure:
 
@@ -707,7 +707,7 @@ These measurements can help evaluate the practical performance of the deployed s
 
 ---
 
-## ⚠️ Limitations
+## Limitations
 
 The system has several important limitations.
 
@@ -740,7 +740,7 @@ Its recommendations should not be considered a guaranteed diagnosis or a replace
 
 ---
 
-## 🔬 Research Questions
+## Research Questions
 
 The project investigates the following questions:
 
@@ -766,7 +766,7 @@ Can the trained model be integrated into a practical web-based crop disease advi
 
 ---
 
-## 📋 Project Roadmap
+## Project Roadmap
 
 * [x] Project planning
 * [ ] Dataset acquisition
@@ -796,7 +796,7 @@ Can the trained model be integrated into a practical web-based crop disease advi
 
 ---
 
-## 📄 Academic Deliverables
+## Academic Deliverables
 
 The project is intended to support the following MCA deliverables:
 
@@ -819,7 +819,7 @@ The project is intended to support the following MCA deliverables:
 
 ---
 
-## 🗂️ Documentation
+## Documentation
 
 Important project documentation includes:
 
@@ -838,7 +838,7 @@ plant-disease-detection-PLAN.md
 
 ---
 
-## 🔮 Future Scope
+## Future Scope
 
 Potential future improvements include:
 
@@ -857,10 +857,6 @@ Potential future improvements include:
 
 ---
 
-## 👨‍💻 Project Type
-
-**MCA Major Project / Research-Oriented Deep Learning Project**
-
 ### Domain
 
 * Artificial Intelligence
@@ -873,7 +869,7 @@ Potential future improvements include:
 
 ---
 
-## ⚖️ Disclaimer
+## Disclaimer
 
 FloraScan AI is an **academic research and decision-support system**.
 
@@ -883,7 +879,7 @@ The system should not be presented as a guaranteed replacement for agricultural 
 
 ---
 
-## 📜 License
+## License
 
 This project is developed for **academic and educational purposes**.
 
@@ -891,7 +887,7 @@ Refer to the repository license file for the applicable usage terms.
 
 ---
 
-## ⭐ Acknowledgements
+## Acknowledgements
 
 * PlantVillage dataset and its contributors
 * TensorFlow / Keras
@@ -902,7 +898,7 @@ Refer to the repository license file for the applicable usage terms.
 
 ---
 
-## 📬 Project Repository
+## Project Repository
 
 **Repository:** `plant-disease-detection-advisory`
 
@@ -910,7 +906,7 @@ Refer to the repository license file for the applicable usage terms.
 
 ---
 
-### 🌱 From Leaf Image to Intelligent Crop Advisory
+### From Leaf Image to Intelligent Crop Advisory
 
 ```text
 Leaf Image
