@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>FloraScan AI - Processing Error</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Outfit:wght@600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body class="error-body">
+
+  <nav class="navbar">
+    <div class="nav-container">
+      <a href="{{ url_for('index') }}" class="brand">
+        <span class="brand-icon">🌿</span>
+        <span class="brand-name">FloraScan<span class="accent-text">AI</span></span>
+      </a>
+    </div>
+  </nav>
+
+  <main class="container error-container">
+    <div class="error-card glass-card">
+      <div class="error-icon">⚠️</div>
+      <h1 class="error-title">Unable to Process Specimen</h1>
+      <p class="error-desc">{{ error_message or "An unexpected error occurred while processing the leaf image." }}</p>
+      
+      <div class="error-tips">
+        <h4>Diagnostic Guidelines:</h4>
+        <ul>
+          <li>Ensure the file is a clear photograph in JPG, JPEG, PNG, or WEBP format.</li>
+          <li>Ensure file size is below 16MB.</li>
+          <li>Make sure the image shows a single well-lit plant leaf with minimal background clutter.</li>
+        </ul>
+      </div>
+
+      <div class="error-actions">
+        <a href="{{ url_for('index') }}" class="btn btn-primary btn-large">
+          ← Return to Diagnostic Center
+        </a>
+      </div>
+    </div>
+  </main>
+
+</body>
+</html>

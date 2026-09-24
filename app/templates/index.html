@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>FloraScan AI - Intelligent Plant Disease Detection & Crop Advisory</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@400;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+
+  <!-- Navigation -->
+  <nav class="navbar">
+    <div class="nav-container">
+      <div class="brand">
+        <span class="brand-icon">🌿</span>
+        <span class="brand-name">FloraScan<span class="accent-text">AI</span></span>
+      </div>
+      <div class="nav-links">
+        <a href="#diagnose" class="nav-link">Diagnose</a>
+        <a href="#how-it-works" class="nav-link">How It Works</a>
+        <a href="#crops" class="nav-link">Supported Crops</a>
+        <a href="#technology" class="nav-link">Technology</a>
+      </div>
+      <a href="#diagnose" class="btn btn-nav">Scan Leaf Now</a>
+    </div>
+  </nav>
+
+  <!-- Hero Section -->
+  <header class="hero">
+    <div class="hero-glow"></div>
+    <div class="container hero-content">
+      <div class="badge-pill">
+        <span class="pulse-dot"></span> Powered by Deep Transfer Learning & Explainable AI (Grad-CAM)
+      </div>
+      <h1 class="hero-title">
+        Intelligent Plant Disease Detection & <span class="gradient-text">Crop Advisory System</span>
+      </h1>
+      <p class="hero-subtitle">
+        Empowering farmers and agriculturalists with instant diagnostic computer vision. Upload a leaf image to detect diseases across 38 crop conditions with visual Grad-CAM proof and agronomic treatment guidance.
+      </p>
+      
+      <div class="hero-stats">
+        <div class="stat-item">
+          <span class="stat-number">54,300+</span>
+          <span class="stat-label">PlantVillage Leaves</span>
+        </div>
+        <div class="stat-divider"></div>
+        <div class="stat-item">
+          <span class="stat-number">38</span>
+          <span class="stat-label">Disease & Healthy Classes</span>
+        </div>
+        <div class="stat-divider"></div>
+        <div class="stat-item">
+          <span class="stat-number">14</span>
+          <span class="stat-label">Crop Species</span>
+        </div>
+        <div class="stat-divider"></div>
+        <div class="stat-item">
+          <span class="stat-number">Grad-CAM</span>
+          <span class="stat-label">Visual Explainability</span>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- Upload / Diagnosis Section -->
+  <section id="diagnose" class="section diagnose-section">
+    <div class="container">
+      
+      {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+          {% for category, message in messages %}
+            <div class="alert alert-{{ category }}">
+              <span class="alert-icon">⚠️</span>
+              <span class="alert-text">{{ message }}</span>
+            </div>
+          {% endfor %}
+        {% endif %}
+      {% endwith %}
+
+      <div class="upload-wrapper glass-card">
+        <div class="upload-header">
+          <h2>Leaf Image Diagnostic Center</h2>
+          <p>Select or drag-and-drop a close-up photograph of a single plant leaf</p>
+        </div>
+
+        <form id="uploadForm" action="{{ url_for('predict') }}" method="POST" enctype="multipart/form-data">
+          
+          <div class="dropzone" id="dropzone">
+            <input type="file" name="file" id="fileInput" accept=".jpg,.jpeg,.png,.webp" class="file-input" required>
+            
+            <div class="dropzone-prompt" id="dropzonePrompt">
+              <div class="upload-icon-wrapper">
+                <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                  <polyline points="17 8 12 3 7 8"></polyline>
+                  <line x1="12" y1="3" x2="12" y2="15"></line>
+                </svg>
+              </div>
+              <h3>Drag and drop plant leaf image here</h3>
+              <p>Supports JPG, JPEG, PNG (Max 16MB)</p>
+              <button type="button" class="btn btn-secondary" onclick="document.getElementById('fileInput').click()">
+                Browse from Device
+              </button>
+            </div>
+
+            <!-- Preview Card -->
+            <div class="preview-container hidden" id="previewContainer">
+              <img id="imagePreview" src="" alt="Selected Leaf Preview" class="preview-img">
+              <div class="preview-info">
+                <span id="fileName" class="preview-filename">leaf_image.jpg</span>
+                <span id="fileSize" class="preview-filesize">2.4 MB</span>
+                <button type="button" id="removeFileBtn" class="btn-text text-danger">Remove & Re-upload</button>
+              </div>
+            </div>
+          </div>
+
+          <div class="upload-actions">
+            <button type="submit" id="submitBtn" class="btn btn-primary btn-large" disabled>
+              <span class="btn-icon">🔬</span>
+              <span id="btnText">Analyze Leaf & Diagnose</span>
+            </button>
+          </div>
+        </form>
+
+        <!-- Loading Overlay -->
+        <div id="loadingOverlay" class="loading-overlay hidden">
+          <div class="spinner"></div>
+          <h3 id="loadingText" class="loading-title">Analyzing Leaf Specimen...</h3>
+          <p id="loadingSubtext" class="loading-desc">Extracting deep visual features and calculating activation maps...</p>
+        </div>
+
+      </div>
+
+    </div>
+  </section>
+
+  <!-- How It Works Section -->
+  <section id="how-it-works" class="section bg-alt">
+    <div class="container">
+      <div class="section-title-wrap">
+        <span class="section-badge">Pipeline Architecture</span>
+        <h2 class="section-title">How FloraScan Diagnoses Crop Disease</h2>
+        <p class="section-subtitle">A state-of-the-art multi-stage deep learning and advisory workflow</p>
+      </div>
+
+      <div class="steps-grid">
+        <div class="step-card glass-card">
+          <div class="step-number">01</div>
+          <div class="step-icon">📸</div>
+          <h3>Image Preprocessing</h3>
+          <p>Uploaded leaf images are sanitized, verified, resized to 224x224 RGB, and normalized to match the deep model input domain.</p>
+        </div>
+
+        <div class="step-card glass-card">
+          <div class="step-number">02</div>
+          <div class="step-icon">🧠</div>
+          <h3>Deep Model Inference</h3>
+          <p>Transfer-learned convolutional feature extractors classify the leaf across 38 distinct disease categories, generating probabilistic confidence scores.</p>
+        </div>
+
+        <div class="step-card glass-card">
+          <div class="step-number">03</div>
+          <div class="step-icon">🎯</div>
+          <h3>Grad-CAM Explainability</h3>
+          <p>Gradients of the predicted disease class are backpropagated into the final convolutional layer to generate a heat-activated overlay proving where lesions exist.</p>
+        </div>
+
+        <div class="step-card glass-card">
+          <div class="step-number">04</div>
+          <div class="step-icon">🌱</div>
+          <h3>Intelligent Crop Advisory</h3>
+          <p>Clinical advisory protocols are retrieved, detailing disease etiology, organic treatments, chemical controls, and preventive agronomy.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Supported Crops & Classes -->
+  <section id="crops" class="section">
+    <div class="container">
+      <div class="section-title-wrap">
+        <span class="section-badge">Comprehensive Coverage</span>
+        <h2 class="section-title">Supported Crops & Pathologies</h2>
+        <p class="section-subtitle">Diagnosing 38 conditions across 14 vital agricultural crops</p>
+      </div>
+
+      <div class="crops-grid">
+        {% for crop, diseases in crops_dict.items() %}
+        <div class="crop-card glass-card">
+          <div class="crop-card-header">
+            <h3>{{ crop }}</h3>
+            <span class="crop-count-badge">{{ diseases|length }} conditions</span>
+          </div>
+          <ul class="crop-disease-list">
+            {% for item in diseases %}
+            <li class="crop-disease-item {% if item.is_healthy %}is-healthy{% endif %}">
+              <span class="disease-bullet">{% if item.is_healthy %}✓{% else %}•{% endif %}</span>
+              <span class="disease-text">{{ item.disease }}</span>
+            </li>
+            {% endfor %}
+          </ul>
+        </div>
+        {% endfor %}
+      </div>
+    </div>
+  </section>
+
+  <!-- Technology Highlights -->
+  <section id="technology" class="section bg-alt">
+    <div class="container">
+      <div class="section-title-wrap">
+        <span class="section-badge">Academic & Technical Foundation</span>
+        <h2 class="section-title">Transfer Learning & Explainable AI (XAI)</h2>
+        <p class="section-subtitle">Bridging the gap between black-box deep neural networks and actionable agricultural trust</p>
+      </div>
+
+      <div class="tech-grid">
+        <div class="tech-card glass-card">
+          <div class="tech-icon">🔬</div>
+          <h3>Transfer Learning Architectures</h3>
+          <p>Pretrained ImageNet backbones (MobileNetV2, ResNet50, EfficientNetB0) were empirically evaluated. The top layers are fine-tuned on PlantVillage to recognize subtle fungal spore patterns and bacterial leaf water-soaking.</p>
+        </div>
+
+        <div class="tech-card glass-card">
+          <div class="tech-icon">🌟</div>
+          <h3>Explainable AI (Grad-CAM)</h3>
+          <p>Gradient-weighted Class Activation Mapping computes the gradient of the predicted class score with respect to convolutional feature maps, visually revealing which leaf regions drove the model's prediction.</p>
+        </div>
+
+        <div class="tech-card glass-card">
+          <div class="tech-icon">🛡️</div>
+          <h3>Cautious AI Decision Support</h3>
+          <p>AI should assist, not mislead. If prediction confidence drops below 60%, the system flags uncertainty and recommends on-field agricultural extension verification.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="container footer-content">
+      <div class="footer-brand">
+        <span class="brand-icon">🌿</span>
+        <span class="brand-name">FloraScan AI</span>
+        <p>Intelligent Plant Disease Detection and Crop Advisory System using Transfer Learning and Explainable AI.</p>
+      </div>
+      <div class="footer-meta">
+        <p>MCA Major Project & Research System</p>
+        <p>© 2026 FloraScan AI. Designed for sustainable agriculture and scientific reproducibility.</p>
+      </div>
+    </div>
+  </footer>
+
+  <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+</body>
+</html>

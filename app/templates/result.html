@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>FloraScan AI - Diagnosis: {{ result.disease_name }} ({{ result.crop }})</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@400;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body class="result-body">
+
+  <!-- Navigation -->
+  <nav class="navbar">
+    <div class="nav-container">
+      <a href="{{ url_for('index') }}" class="brand">
+        <span class="brand-icon">🌿</span>
+        <span class="brand-name">FloraScan<span class="accent-text">AI</span></span>
+      </a>
+      <div class="nav-actions">
+        <button onclick="window.print()" class="btn btn-secondary btn-sm">🖨️ Print Report</button>
+        <a href="{{ url_for('index') }}" class="btn btn-primary btn-sm">← Diagnose Another Leaf</a>
+      </div>
+    </div>
+  </nav>
+
+  <main class="container result-container">
+    
+    <!-- Executive Diagnosis Banner -->
+    <div class="diagnosis-banner glass-card {% if result.is_healthy %}is-healthy-banner{% else %}is-diseased-banner{% endif %}">
+      <div class="diagnosis-main">
+        <div class="diagnosis-tag">
+          <span class="crop-tag">{{ result.crop }}</span>
+          {% if result.is_healthy %}
+            <span class="status-badge badge-healthy">✓ HEALTHY SPECIMEN</span>
+          {% else %}
+            <span class="status-badge badge-diseased">⚠️ PATHOLOGY DETECTED</span>
+          {% endif %}
+        </div>
+        <h1 class="diagnosis-title">{{ result.disease_name }}</h1>
+        <p class="diagnosis-pathogen"><strong>Pathogen:</strong> {{ result.pathogen }}</p>
+        <p class="diagnosis-desc">{{ result.description }}</p>
+      </div>
+
+      <!-- Confidence Gauge -->
+      <div class="confidence-box">
+        <div class="confidence-meter-circular">
+          <svg viewBox="0 0 36 36" class="circular-chart">
+            <path class="circle-bg"
+              d="M18 2.0845
+                a 15.9155 15.9155 0 0 1 0 31.831
+                a 15.9155 15.9155 0 0 1 0 -31.831"
+            />
+            <path class="circle"
+              stroke-dasharray="{{ result.confidence * 100 }}, 100"
+              d="M18 2.0845
+                a 15.9155 15.9155 0 0 1 0 31.831
+                a 15.9155 15.9155 0 0 1 0 -31.831"
+            />
+            <text x="18" y="20.35" class="percentage">{{ result.confidence_percent }}</text>
+          </svg>
+        </div>
+        <span class="confidence-label">Diagnosis Confidence</span>
+      </div>
+    </div>
+
+    <!-- Safety Warning if Confidence < Threshold -->
+    {% if result.warning %}
+    <div class="alert alert-warning-box">
+      <div class="alert-icon-lg">⚠️</div>
+      <div class="alert-content">
+        <h4>Cautious Decision Notice</h4>
+        <p>{{ result.warning }}</p>
+      </div>
+    </div>
+    {% endif %}
+
+    <!-- Visual Inspection & Grad-CAM Heatmap -->
+    <div class="visual-inspection-grid">
+      
+      <!-- Uploaded Leaf Card -->
+      <div class="card visual-card glass-card">
+        <div class="card-header">
+          <h3>Uploaded Specimen</h3>
+          <span class="badge">RGB Input (224×224)</span>
+        </div>
+        <div class="image-wrapper">
+          <img src="{{ orig_url }}" alt="Uploaded Plant Leaf" class="inspection-img">
+        </div>
+        <p class="card-caption">Preprocessed raw leaf image evaluated by convolutional feature extractors.</p>
+      </div>
+
+      <!-- Grad-CAM Card -->
+      <div class="card visual-card glass-card">
+        <div class="card-header">
+          <h3>Grad-CAM Explainable AI (XAI)</h3>
+          <span class="badge badge-xai">Target Conv Layer Activation</span>
+        </div>
+        <div class="image-wrapper">
+          <img src="{{ gradcam_url }}" alt="Grad-CAM Activation Heatmap" class="inspection-img">
+        </div>
+        <div class="heatmap-legend">
+          <div class="legend-bar"></div>
+          <div class="legend-labels">
+            <span>Low Influence (Normal Tissue)</span>
+            <span>High Activation (Disease Lesion)</span>
+          </div>
+        </div>
+        <p class="card-caption">Visual explanation highlighting spatial leaf regions contributing most strongly to the neural network's diagnosis.</p>
+      </div>
+
+    </div>
+
+    <!-- Top-3 Candidate Predictions -->
+    <div class="card top-candidates-card glass-card">
+      <div class="card-header">
+        <h3>Differential Diagnosis (Top-3 Probability Distribution)</h3>
+      </div>
+      <div class="candidates-list">
+        {% for cand in result.top_candidates %}
+        <div class="candidate-row">
+          <div class="candidate-meta">
+            <span class="candidate-crop">{{ cand.crop }}</span>
+            <span class="candidate-name">{{ cand.disease }}</span>
+          </div>
+          <div class="candidate-progress-wrap">
+            <div class="progress-bar-bg">
+              <div class="progress-bar-fill" style="width: {{ cand.confidence * 100 }}%;"></div>
+            </div>
+            <span class="candidate-percent">{{ cand.confidence_percent }}</span>
+          </div>
+        </div>
+        {% endfor %}
+      </div>
+    </div>
+
+    <!-- Structured Agronomic Advisory -->
+    <div class="card advisory-card glass-card">
+      <div class="advisory-tabs">
+        <button class="tab-btn active" onclick="openTab(event, 'symptomsTab')">
+          <span class="tab-icon">🔍</span> Symptoms & Identification
+        </button>
+        <button class="tab-btn" onclick="openTab(event, 'treatmentTab')">
+          <span class="tab-icon">💊</span> Treatment & Management
+        </button>
+        <button class="tab-btn" onclick="openTab(event, 'preventionTab')">
+          <span class="tab-icon">🛡️</span> Prevention Protocols
+        </button>
+      </div>
+
+      <!-- Tab 1: Symptoms -->
+      <div id="symptomsTab" class="tab-content active">
+        <h3 class="tab-title">Diagnostic Characteristics & Symptoms</h3>
+        <ul class="styled-list">
+          {% for symptom in result.symptoms %}
+          <li>
+            <span class="list-bullet">▶</span>
+            <span>{{ symptom }}</span>
+          </li>
+          {% endfor %}
+        </ul>
+      </div>
+
+      <!-- Tab 2: Treatment -->
+      <div id="treatmentTab" class="tab-content">
+        <h3 class="tab-title">Curative & Therapeutic Measures</h3>
+        <ul class="styled-list">
+          {% for trt in result.treatment %}
+          <li>
+            <span class="list-bullet">✦</span>
+            <span>{{ trt }}</span>
+          </li>
+          {% endfor %}
+        </ul>
+      </div>
+
+      <!-- Tab 3: Prevention -->
+      <div id="preventionTab" class="tab-content">
+        <h3 class="tab-title">Agronomic Prevention & Cultural Practices</h3>
+        <ul class="styled-list">
+          {% for prev in result.prevention %}
+          <li>
+            <span class="list-bullet">✓</span>
+            <span>{{ prev }}</span>
+          </li>
+          {% endfor %}
+        </ul>
+      </div>
+    </div>
+
+    <!-- Action Bar -->
+    <div class="result-actions">
+      <a href="{{ url_for('index') }}" class="btn btn-primary btn-large">
+        <span>🔬</span> Diagnose Another Leaf Specimen
+      </a>
+    </div>
+
+  </main>
+
+  <footer class="footer">
+    <div class="container footer-content">
+      <div class="footer-brand">
+        <span class="brand-icon">🌿</span>
+        <span class="brand-name">FloraScan AI</span>
+        <p>Intelligent Plant Disease Detection and Crop Advisory System using Transfer Learning and Explainable AI.</p>
+      </div>
+      <div class="footer-meta">
+        <p>MCA Major Project & Research System</p>
+        <p>© 2026 FloraScan AI. Designed for sustainable agriculture and scientific reproducibility.</p>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    function openTab(evt, tabName) {
+      const tabContents = document.getElementsByClassName("tab-content");
+      for (let i = 0; i < tabContents.length; i++) {
+        tabContents[i].classList.remove("active");
+      }
+      const tabButtons = document.getElementsByClassName("tab-btn");
+      for (let i = 0; i < tabButtons.length; i++) {
+        tabButtons[i].classList.remove("active");
+      }
+      document.getElementById(tabName).classList.add("active");
+      evt.currentTarget.classList.add("active");
+    }
+  </script>
+</body>
+</html>

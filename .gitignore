@@ -1,0 +1,204 @@
+# ============================================================
+# Python
+# ============================================================
+
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Python virtual environments
+venv/
+env/
+.venv/
+
+# Environment variables
+.env
+.env.*
+!.env.example
+
+# Logs
+*.log
+
+
+# ============================================================
+# Testing
+# ============================================================
+
+.pytest_cache/
+.coverage
+htmlcov/
+.tox/
+.nox/
+
+
+# ============================================================
+# Jupyter Notebook
+# ============================================================
+
+.ipynb_checkpoints/
+
+
+# ============================================================
+# PlantVillage Dataset
+# ============================================================
+
+# Local PlantVillage dataset
+plantvillage dataset/
+
+# Dataset storage
+data/raw/
+data/processed/
+
+# Keep dataset documentation
+!data/README.md
+
+
+# ============================================================
+# Machine Learning Models
+# ============================================================
+
+# Large trained model files
+*.keras
+*.h5
+*.hdf5
+*.weights.h5
+
+# TensorFlow checkpoints
+*.ckpt
+checkpoint
+checkpoint.*
+
+# Model directories
+models/baseline/*
+models/experiments/*
+
+# Keep directory structure
+!models/baseline/.gitkeep
+!models/experiments/.gitkeep
+
+# Final model directory
+# Keep class mapping but ignore large model files
+models/final/*.keras
+models/final/*.h5
+models/final/*.hdf5
+models/final/*.weights.h5
+
+!models/final/class_names.json
+!models/final/.gitkeep
+
+
+# ============================================================
+# Flask Application Uploads
+# ============================================================
+
+app/static/uploads/*
+
+# Keep upload directory
+!app/static/uploads/.gitkeep
+
+
+# ============================================================
+# Generated / Temporary Files
+# ============================================================
+
+*.tmp
+*.temp
+*.bak
+*.swp
+*.swo
+
+# Temporary prediction images
+*gradcam*.png
+*heatmap*.png
+
+
+# ============================================================
+# Generated Experiment Files
+# ============================================================
+
+# TensorBoard logs
+logs/
+tensorboard/
+runs/
+
+# Generated checkpoints
+checkpoints/
+
+# Cache files
+.cache/
+
+
+# ============================================================
+# Reports / Generated Outputs
+# ============================================================
+
+# Ignore generated metric files if they are large
+# Uncomment only if you generate very large files
+# reports/metrics/*.json
+
+
+# ============================================================
+# Operating System
+# ============================================================
+
+# Windows
+Thumbs.db
+Thumbs.db:encryptable
+ehthumbs.db
+Desktop.ini
+
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+
+# Linux
+*~
+
+
+# ============================================================
+# IDE / Editors
+# ============================================================
+
+# Visual Studio Code
+.vscode/
+
+# JetBrains
+.idea/
+
+# VS Code workspace files
+*.code-workspace
+
+
+# ============================================================
+# Build / Distribution
+# ============================================================
+
+build/
+dist/
+*.egg-info/
+.eggs/
+
+# Packaging
+pip-wheel-metadata/
+
+
+# ============================================================
+# Secrets / Credentials
+# ============================================================
+
+*.pem
+*.key
+*.crt
+
+# API keys / credentials
+secrets.json
+credentials.json
+
+
+# ============================================================
+# Local Configuration
+# ============================================================
+
+config.local.py
+settings.local.py
